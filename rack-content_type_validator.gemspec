@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "rack-content_type_validator"
   s.version     = Rack::ContentTypeValidator::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Lucas Fais"]
-  s.email       = ["lucasfais@gmail.com"]
+  s.authors     = ["Lucas Fais", "Marcelo Manzan"]
+  s.email       = ["lucasfais@gmail.com", "manzan@gmail.com"]
   s.homepage    = "http://github.com/abril/rack-content_type_validator"
   s.summary     = %q{Makes easy to handle mutipart/related requests.}
   s.description = %q{It's a rack middleware to validate the header Content-Type of requests.}
