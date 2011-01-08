@@ -13,9 +13,8 @@ module Rack
 
     def call(env)
       if match_path?(env['PATH_INFO']) && match_method?(env['REQUEST_METHOD'])
-        content_type = env['CONTENT_TYPE']
-        
-        unless valid_content_type?(content_type) && valid_charset?(content_type)
+
+        unless valid_content_type?(env['CONTENT_TYPE'])
           response = Response.new
           response.status = 415
           response.write(error_message)
@@ -43,18 +42,27 @@ module Rack
       end
       
       def valid_content_type?(content_type)
-        return true unless @expected_params[:mime_type]
-        
-        type_and_subtype = content_type ? content_type[/^([\w\/]+)\b/, 1] : nil
-        type_and_subtype == @expected_params[:mime_type]
+        valid_mime_type?(@expected_params[:mime_type], content_type) &&
+        valid_params?(@expected_params, content_type)
       end
       
-      def valid_charset?(content_type)
-        return true unless @expected_params[:charset]
+      def valid_mime_type?(expected_mime_type, content_type)
+        return true unless expected_mime_type
         
-        charset = content_type ? content_type[/\bcharset=([^;\s]*)/, 1] : nil
-        charset.gsub!('"', '') if charset
-        charset == @expected_params[:charset]
+        mime_type = content_type ? content_type[/^([\w\/]+)\b/, 1] : nil
+        mime_type == expected_mime_type
+      end
+      
+      def valid_params?(expected_params, content_type)
+        expected_params = expected_params.dup
+        expected_params.delete(:mime_type)
+        return true unless expected_params
+        
+        expected_params.all? do |key, value|
+          param = content_type ? content_type[/\b#{key}=([^;\s]*)/, 1] : nil
+          param.gsub!('"', '') if param
+          param == value
+        end
       end
       
       def error_message

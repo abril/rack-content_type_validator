@@ -21,7 +21,7 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("PUT", "/request_path", 'application/json')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 200
+    assert_equal 200, status
   end
 
   def test_incorrect_content_type
@@ -33,7 +33,7 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("PUT", path, 'application/json')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 415
+    assert_equal 415, status
   end
   
   def test_correct_content_type
@@ -45,7 +45,7 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("POST", path, 'application/json')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 200
+    assert_equal 200, status
   end
   
   def test_correct_content_type_and_incorrect_charset
@@ -57,7 +57,7 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("POST", path, 'text/plain; charset=us-ascii')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 415
+    assert_equal 415, status
   end
   
   def test_correct_content_type_and_charset
@@ -69,7 +69,7 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("POST", path, 'application/json; charset=UTF-8')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 200
+    assert_equal 200, status
   end
   
   def test_correct_content_type_and_charset_not_given
@@ -81,7 +81,7 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("POST", path, 'application/json; charset=UTF-8')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 200
+    assert_equal 200, status
   end
   
   def test_regexp_on_path
@@ -91,7 +91,7 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("POST", "/content/1/comments", 'application/json; charset=UTF-8')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 200
+    assert_equal 200, status
   end
   
   def test_charset_with_quotes
@@ -101,8 +101,17 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
     env = build_env("POST", "/content/1/comments", 'application/xml; charset="UTF-8"')
     status, headers, body = middleware.call(env)
 
-    assert_equal status, 200
+    assert_equal 200, status
+  end
+  
+  def test_others_params_like_type
+    expected_params = {:type => "application/xml"}
+    middleware = build_middleware(:post, /comments/, expected_params)
     
+    env = build_env("POST", "/content/1/comments", 'multipart/related; type="application/json"')
+    status, headers, body = middleware.call(env)
+
+    assert_equal 415, status
   end
   
 end
