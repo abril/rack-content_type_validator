@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email       = ["lucasfais@gmail.com"]
   s.homepage    = "http://github.com/abril/rack-content_type_validator"
   s.summary     = %q{Makes easy to handle mutipart/related requests.}
-  s.description = %q{It's a rack middleware to parse multipart/related requests and rebuild a simple/merged parameters hash.}
+  s.description = %q{It's a rack middleware to validate the header Content-Type of requests.}
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "rack-content_type_validator"
