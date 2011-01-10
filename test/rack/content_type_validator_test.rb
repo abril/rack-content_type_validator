@@ -47,6 +47,21 @@ class ContentTypeValidatorTest < Test::Unit::TestCase
 
     assert_equal 200, status
   end
+
+  def test_correct_content_type_scope
+    path = "/posts"
+
+    expected_params = {:mime_type => ["application/json", "application/xml"]}
+    middleware = build_middleware(:post, path, expected_params)
+
+    env = build_env("POST", path, 'application/json')
+    status, headers, body = middleware.call(env)
+    assert_equal 200, status
+
+    env = build_env("POST", path, 'application/xml')
+    status, headers, body = middleware.call(env)
+    assert_equal 200, status
+  end
   
   def test_correct_content_type_and_incorrect_charset
     path = "/comments"

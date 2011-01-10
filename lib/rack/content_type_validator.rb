@@ -9,6 +9,7 @@ module Rack
       @methods = handle_methods(methods)
       @path = path
       @expected_params = expected_params
+      @expected_params[:mime_type] = [@expected_params[:mime_type]] if @expected_params[:mime_type].is_a?(String)
     end
 
     def call(env)
@@ -50,7 +51,7 @@ module Rack
         return true unless expected_mime_type
         
         mime_type = content_type ? content_type[/^([\w\/]+)\b/, 1] : nil
-        mime_type == expected_mime_type
+        expected_mime_type.include?(mime_type)
       end
       
       def valid_params?(expected_params, content_type)
