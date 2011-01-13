@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Lucas Fais", "Marcelo Manzan"]
   s.email       = ["lucasfais@gmail.com", "manzan@gmail.com"]
   s.homepage    = "http://github.com/abril/rack-content_type_validator"
-  s.summary     = %q{Makes easy to handle mutipart/related requests.}
+  s.summary     = %q{Validates the header Content-Type of requests.}
   s.description = %q{It's a rack middleware to validate the header Content-Type of requests.}
 
   s.required_rubygems_version = ">= 1.3.6"
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   excepts = %w[
     .gitignore
-    rack-multipart_related.gemspec
+    rack-content_type_validator.gemspec
   ]
   tests = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.files              = `git ls-files`.split("\n") - excepts - tests
